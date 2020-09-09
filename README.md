@@ -1,2 +1,2 @@
 # GMapsServices
-Google Maps Services Wrapper
+Google Maps API Wrapper
