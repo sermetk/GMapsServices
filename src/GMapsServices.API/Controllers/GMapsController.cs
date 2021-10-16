@@ -1,40 +1,53 @@
-﻿using System.Threading.Tasks;
-using GMapsServices.Common.Contracts;
-using GMapsServices.Common.Dtos.GooglePlaces;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using GMapsServices.Api.Contracts;
 using Microsoft.AspNetCore.Mvc;
 
-namespace GMapsServices.API.Controllers
+namespace GMapsServices.Api.Controllers
 {
     public class GMapsController : Controller
     {
-        private readonly IMapsBusinessEngine mapsBusinessEngine;
-        public GMapsController(IMapsBusinessEngine mapsBusinessEngine)
+        private readonly IMapsServices _mapsServices;
+
+        public GMapsController(IMapsServices mapsServices)
         {
-            this.mapsBusinessEngine = mapsBusinessEngine;
+            _mapsServices = mapsServices;
         }
+
         [HttpGet]
-        [Route("/Maps/GetRoute")]
-        public async Task<RouteDirectionDto> GetRoute(string origin, string destination)
+        [Route("/Maps/Route")]
+        public async Task<IActionResult> Route(string origin, string destination, CancellationToken cancellationToken)
         {
-            return await mapsBusinessEngine.GetRouteAsync(origin, destination);
+            var result = await _mapsServices.RouteAsync(origin, destination, cancellationToken);
+
+            return Ok(result);
         }
+
         [HttpGet]
-        [Route("/Maps/GetPlaceDetail")]
-        public async Task<PlacesDetailDto> GetPlaceDetail(string placeId)
+        [Route("/Maps/PlaceDetail")]
+        public async Task<IActionResult> PlaceDetail(string placeId, CancellationToken cancellationToken)
         {
-            return await mapsBusinessEngine.GetPlaceDetailAsync(placeId);
+            var result = await _mapsServices.PlaceDetailAsync(placeId, cancellationToken);
+
+            return Ok(result);
         }
+
         [HttpGet]
-        [Route("/Maps/GetAutoComplete")]
-        public async Task<PlacesAutoCompleteDto> GetAutoComplete(string origin, string input)
+        [Route("/Maps/AutoComplete")]
+        public async Task<IActionResult> AutoComplete(string origin, string input, CancellationToken cancellationToken)
         {
-            return await mapsBusinessEngine.GetAutoCompleteAsync(origin, input);
+            var result = await _mapsServices.AutoCompleteAsync(origin, input, cancellationToken);
+
+            return Ok(result);
         }
+
         [HttpGet]
-        [Route("/Maps/GetReverseGeocode")]
-        public async Task<ReverseGeocodeDto> GetReverseGeocode(string latlng)
+        [Route("/Maps/ReverseGeocode")]
+        public async Task<IActionResult> ReverseGeocode(string latlng, CancellationToken cancellationToken)
         {
-            return await mapsBusinessEngine.GetReverseGeocodeAsync(latlng);
+            var result = await _mapsServices.ReverseGeocodeAsync(latlng, cancellationToken);
+
+            return Ok(result);
         }
     }
 }

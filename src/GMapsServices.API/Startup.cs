@@ -1,29 +1,45 @@
-﻿using GMapsServices.BusinessEngine;
-using GMapsServices.Common.Contracts;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.EntityFrameworkCore;
+using Serilog;
+using GMapsServices.Api.Components;
+using GMapsServices.Api.Filters;
+using GMapsServices.Api.Contracts;
+using GMapsServices.Api.Services;
+using GMapsServices.Api.Models;
 
-namespace GMapsServices.API
+namespace GMapsServices.Api
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private readonly IConfiguration _configuration;
+
+        private readonly IHostEnvironment _environment;
+
+        public Startup(IConfiguration configuration, IHostEnvironment environment)
         {
-            Configuration = configuration;
+            _configuration = configuration;
+
+            _environment = environment;
         }
-        public IConfiguration Configuration { get; }
+
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient(typeof(IHttpContextAccessor), typeof(HttpContextAccessor));
-            services.AddScoped(typeof(IMapsBusinessEngine), typeof(MapsBusinessEngine));  
-            services.AddScoped(typeof(IExternalHttpRequestBusinessEngine), typeof(ExternalHttpRequestBusinessEngine));
+            services.Configure<GoogleMapsOptions>(options => _configuration.GetSection("Maps").Bind(options));
+
+            services.AddTransient(typeof(IMapsServices), typeof(MapsService));
+
+            services.AddTransient(typeof(IExternalHttpRequests), typeof(ExternalHttpRequests));
+
             services.AddHttpClient();
-            services.AddControllers().AddJsonOptions(opt => opt.JsonSerializerOptions.PropertyNamingPolicy = null);
+
+            services.AddControllers(options => options.Filters.Add(typeof(ServiceResultWrapper)));
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
@@ -32,27 +48,43 @@ namespace GMapsServices.API
                     Version = "1.0.0"
                 });
             });
+
+            services.AddDbContextPool<GMapsServicesContext>(options =>
+            {
+                options.UseNpgsql(_configuration.GetConnectionString("Database")).EnableSensitiveDataLogging(_environment.IsDevelopment());
+
+                options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+            });
         }
+
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseHttpsRedirection();
-            app.UseRouting();
-            app.UseAuthentication();
-            app.UseAuthorization(); 
-            app.UseEndpoints(endpoints =>
+            app.UseSerilogRequestLogging(options => options.EnrichDiagnosticContext = (diagnosticContext, httpContext) =>
             {
-                endpoints.MapControllers();
-            });
-            if (env.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI(c =>
+                if (httpContext.Features.Get<IExceptionHandlerPathFeature>() != null)
                 {
-                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "GMapsServices");
-                    c.RoutePrefix = "docs";
-                    c.DocumentTitle = "GMapsServices API";
-                });
-            }
+                    diagnosticContext.Set("Exception", httpContext.Features.Get<IExceptionHandlerPathFeature>().Error);
+                }
+            });
+
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "GMapsServices v1");
+
+                c.RoutePrefix = string.Empty;
+            });
+
+            app.UseRouting();
+
+            app.UseEndpoints(endpoints => endpoints.MapControllers());
+
+            //if (!env.IsEnvironment("Test"))
+            //{
+            //    gmapsServicesContext.Database.EnsureCreated();
+            //}
         }      
     }
 }
