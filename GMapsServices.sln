@@ -3,17 +3,21 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30002.166
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GMapsServices.API", "src\GMapsServices.API\GMapsServices.API.csproj", "{D2826929-004A-4894-80D5-74456621A958}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GMapsServices.Api", "src\GMapsServices.Api\GMapsServices.Api.csproj", "{D2826929-004A-4894-80D5-74456621A958}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GMapsServices.Test", "test\GMapsServices.Test\GMapsServices.Test.csproj", "{35F7FE8E-8F60-4F61-98A3-1E34AB94174D}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GMapsServices.BusinessEngine", "src\GMapsServices.Business\GMapsServices.BusinessEngine.csproj", "{E21C1969-CF42-48E9-BA3C-F800246BA610}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GMapsServices.Common", "src\GMapsServices.Common\GMapsServices.Common.csproj", "{542F8F5F-7138-482E-AF1B-F96A6CFD57CE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GMapsServices.UnitTest", "test\GMapsServices.UnitTest\GMapsServices.UnitTest.csproj", "{35F7FE8E-8F60-4F61-98A3-1E34AB94174D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{35C30AD1-5903-47E1-9827-BAFC0CC7F32F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{A73BE525-21E5-4EA5-9713-61D52D7187ED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GMapsServices.AcceptanceTest", "test\GMapsServices.AcceptanceTest\GMapsServices.AcceptanceTest.csproj", "{CD7F6D24-F9AE-4CC0-84EA-9BCEE94AAAEA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GMapsServices.IntegrationTest", "test\GMapsServices.IntegrationTest\GMapsServices.IntegrationTest.csproj", "{B319E9A5-BE84-4681-BC24-BD0E618F9648}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GMapsServices.Tests.Common", "test\GMapsServices.Tests.Common\GMapsServices.Tests.Common.csproj", "{8C4F11DC-D207-4E70-B4A3-386FA6356AA3}"
+EndProject
+Project("{9344BDBB-3E7F-41FC-A0DD-8665D75EE146}") = "docker-compose", "docker-compose.dcproj", "{F2BAEA53-26E5-41A2-87DE-2FBE27B9E6D7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,14 +33,22 @@ Global
 		{35F7FE8E-8F60-4F61-98A3-1E34AB94174D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{35F7FE8E-8F60-4F61-98A3-1E34AB94174D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{35F7FE8E-8F60-4F61-98A3-1E34AB94174D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E21C1969-CF42-48E9-BA3C-F800246BA610}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E21C1969-CF42-48E9-BA3C-F800246BA610}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E21C1969-CF42-48E9-BA3C-F800246BA610}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E21C1969-CF42-48E9-BA3C-F800246BA610}.Release|Any CPU.Build.0 = Release|Any CPU
-		{542F8F5F-7138-482E-AF1B-F96A6CFD57CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{542F8F5F-7138-482E-AF1B-F96A6CFD57CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{542F8F5F-7138-482E-AF1B-F96A6CFD57CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{542F8F5F-7138-482E-AF1B-F96A6CFD57CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD7F6D24-F9AE-4CC0-84EA-9BCEE94AAAEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD7F6D24-F9AE-4CC0-84EA-9BCEE94AAAEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD7F6D24-F9AE-4CC0-84EA-9BCEE94AAAEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD7F6D24-F9AE-4CC0-84EA-9BCEE94AAAEA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B319E9A5-BE84-4681-BC24-BD0E618F9648}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B319E9A5-BE84-4681-BC24-BD0E618F9648}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B319E9A5-BE84-4681-BC24-BD0E618F9648}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B319E9A5-BE84-4681-BC24-BD0E618F9648}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C4F11DC-D207-4E70-B4A3-386FA6356AA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C4F11DC-D207-4E70-B4A3-386FA6356AA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C4F11DC-D207-4E70-B4A3-386FA6356AA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C4F11DC-D207-4E70-B4A3-386FA6356AA3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2BAEA53-26E5-41A2-87DE-2FBE27B9E6D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2BAEA53-26E5-41A2-87DE-2FBE27B9E6D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2BAEA53-26E5-41A2-87DE-2FBE27B9E6D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2BAEA53-26E5-41A2-87DE-2FBE27B9E6D7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -46,8 +58,9 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{D2826929-004A-4894-80D5-74456621A958} = {35C30AD1-5903-47E1-9827-BAFC0CC7F32F}
-		{E21C1969-CF42-48E9-BA3C-F800246BA610} = {35C30AD1-5903-47E1-9827-BAFC0CC7F32F}
-		{542F8F5F-7138-482E-AF1B-F96A6CFD57CE} = {35C30AD1-5903-47E1-9827-BAFC0CC7F32F}
 		{35F7FE8E-8F60-4F61-98A3-1E34AB94174D} = {A73BE525-21E5-4EA5-9713-61D52D7187ED}
+		{CD7F6D24-F9AE-4CC0-84EA-9BCEE94AAAEA} = {A73BE525-21E5-4EA5-9713-61D52D7187ED}
+		{B319E9A5-BE84-4681-BC24-BD0E618F9648} = {A73BE525-21E5-4EA5-9713-61D52D7187ED}
+		{8C4F11DC-D207-4E70-B4A3-386FA6356AA3} = {A73BE525-21E5-4EA5-9713-61D52D7187ED}
 	EndGlobalSection
 EndGlobal
