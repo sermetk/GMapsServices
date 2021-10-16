@@ -1,0 +1,39 @@
+﻿version: '3.4'
+
+services:
+  gmapsservices.api:
+    image: ${DOCKER_REGISTRY-}gmapsservices
+    build:
+      context: .
+      dockerfile: src/GMapsServices.Api/Dockerfile
+    environment:
+      DBServer: "db-server"    
+      ASPNETCORE_ENVIRONMENT: "Production"
+    ports:
+      - "5001:80"
+    depends_on:
+      - db-server
+      - seq_server
+    networks:
+      - gmapsservices
+  db-server:
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: "fWGPe4sCq3kN"
+    ports:
+      - "5432:5432"
+    networks:
+      - gmapsservices
+  seq_server:
+    image: datalust/seq:latest
+    ports:
+      - "5341:80"
+    environment:
+      ACCEPT_EULA: "Y"
+    restart: unless-stopped
+    networks:
+      - gmapsservices
+networks:
+  gmapsservices:
+    driver: bridge
